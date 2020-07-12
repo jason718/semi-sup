@@ -22,7 +22,7 @@ from absl import flags
 
 from libml import data, layers, utils
 from libml.utils import EasyDict
-from mixmatch import MixMatch
+from models.mixmatch import MixMatch
 
 FLAGS = flags.FLAGS
 

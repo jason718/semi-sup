@@ -62,17 +62,31 @@ export PYTHONPATH=$PYTHONPATH:.
 
 For example, train a model with 32 filters on cifar10 shuffled with `seed=1`, 250 labeled samples and 1000 validation sample:
 ```bash
+# single-gpu
 CUDA_VISIBLE_DEVICES=0 python main.py --filters=32 --dataset=cifar10.1@250-1000 --train_dir ./experiments/cifar10.1@250-1000
+
+# multi-gpu: just pass more GPUs and the model automatically scales to them, here we assign GPUs 0-1 to the program:
+CUDA_VISIBLE_DEVICES=0,1 python main.py --filters=32 --dataset=cifar10.1@250-1000 --train_dir ./experiments/cifar10.1@250-1000
 ```
 
-Available labelled sizes are 250, 1000, 4000.
-For validation, available sizes are 1000, 5000.
+**Naming rule**: `${dataset}.${seed}@${size}-${valid}`<br>
+Available labelled sizes are 250, 1000, 4000.<br>
+For validation, available sizes are 1000, 5000.<br>
 Possible shuffling seeds are 1, 2, 3, 4, 5 and 0 for no shuffling (0 is not used in practiced since data requires to be
 shuffled for gradient descent to work properly).
 
-### Image classification (multi-gpu)
-
-Please check the bash scripts under `./runs`.
+### Image classification
+The hyper-parameters used in the paper:
+```bash
+for SEED in 1 2 3 4 5; do
+    for SIZE in 250 1000 4000; do
+    CUDA_VISIBLE_DEVICES=0,1 python  main.py --filters=32 
+        --dataset=cifar10.${SEED}@${SIZE}-1000 \
+        --train_dir ./experiments/cifar10.${SEED}@${SIZE}-1000 \
+        --alpha 0.01 --inner_steps 512
+    done
+done
+```
 
 ### Flags
 
