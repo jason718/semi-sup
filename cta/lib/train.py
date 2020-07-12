@@ -15,7 +15,7 @@
 import numpy as np
 from absl import flags
 
-from fully_supervised.lib.train import ClassifyFullySupervised
+# from fully_supervised.lib.train import ClassifyFullySupervised
 from libml import data
 from libml.augment import AugmentPoolCTA
 from libml.ctaugment import CTAugment
@@ -101,19 +101,19 @@ class CTAClassifySemi(ClassifySemi):
         return np.array(accuracies, 'f')
 
 
-class CTAClassifyFullySupervised(ClassifyFullySupervised, CTAClassifySemi):
-    """Fully-supervised classification."""
+# class CTAClassifyFullySupervised(ClassifyFullySupervised, CTAClassifySemi):
+#     """Fully-supervised classification."""
 
-    def train_step(self, train_session, gen_labeled):
-        x = gen_labeled()
-        v = train_session.run([self.ops.classify_op, self.ops.train_op, self.ops.update_step],
-                              feed_dict={self.ops.x: x['probe'],
-                                         self.ops.xt: x['image'],
-                                         self.ops.label: x['label']})
-        self.tmp.step = v[-1]
-        lx = v[0]
-        for p in range(lx.shape[0]):
-            error = lx[p]
-            error[x['label'][p]] -= 1
-            error = np.abs(error).sum()
-            self.augmenter.update_rates(x['policy'][p], 1 - 0.5 * error)
+#     def train_step(self, train_session, gen_labeled):
+#         x = gen_labeled()
+#         v = train_session.run([self.ops.classify_op, self.ops.train_op, self.ops.update_step],
+#                               feed_dict={self.ops.x: x['probe'],
+#                                          self.ops.xt: x['image'],
+#                                          self.ops.label: x['label']})
+#         self.tmp.step = v[-1]
+#         lx = v[0]
+#         for p in range(lx.shape[0]):
+#             error = lx[p]
+#             error[x['label'][p]] -= 1
+#             error = np.abs(error).sum()
+#             self.augmenter.update_rates(x['policy'][p], 1 - 0.5 * error)

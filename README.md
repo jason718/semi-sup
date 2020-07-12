@@ -34,19 +34,17 @@ CUDA_VISIBLE_DEVICES= ./scripts/create_datasets.py
 cp $ML_DATA/svhn-test.tfrecord $ML_DATA/svhn_noextra-test.tfrecord
 
 # Create unlabeled datasets
-CUDA_VISIBLE_DEVICES= scripts/create_unlabeled.py $ML_DATA/SSL2/svhn $ML_DATA/svhn-train.tfrecord $ML_DATA/svhn-extra.tfrecord &
-CUDA_VISIBLE_DEVICES= scripts/create_unlabeled.py $ML_DATA/SSL2/svhn_noextra $ML_DATA/svhn-train.tfrecord &
-CUDA_VISIBLE_DEVICES= scripts/create_unlabeled.py $ML_DATA/SSL2/cifar10 $ML_DATA/cifar10-train.tfrecord &
-wait
+CUDA_VISIBLE_DEVICES= scripts/create_unlabeled.py $ML_DATA/SSL2/cifar10 $ML_DATA/cifar10-train.tfrecord
+CUDA_VISIBLE_DEVICES= scripts/create_unlabeled.py $ML_DATA/SSL2/svhn $ML_DATA/svhn-train.tfrecord $ML_DATA/svhn-extra.tfrecord
+CUDA_VISIBLE_DEVICES= scripts/create_unlabeled.py $ML_DATA/SSL2/svhn_noextra $ML_DATA/svhn-train.tfrecord
 
 # Create semi-supervised subsets
 for seed in 0 1 2 3 4 5; do
     for size in 250 1000 4000; do
-        CUDA_VISIBLE_DEVICES= scripts/create_split.py --seed=$seed --size=$size $ML_DATA/SSL2/svhn $ML_DATA/svhn-train.tfrecord $ML_DATA/svhn-extra.tfrecord &
-        CUDA_VISIBLE_DEVICES= scripts/create_split.py --seed=$seed --size=$size $ML_DATA/SSL2/svhn_noextra $ML_DATA/svhn-train.tfrecord &
-        CUDA_VISIBLE_DEVICES= scripts/create_split.py --seed=$seed --size=$size $ML_DATA/SSL2/cifar10 $ML_DATA/cifar10-train.tfrecord &
+        CUDA_VISIBLE_DEVICES= scripts/create_split.py --seed=$seed --size=$size $ML_DATA/SSL2/cifar10 $ML_DATA/cifar10-train.tfrecord
+        CUDA_VISIBLE_DEVICES= scripts/create_split.py --seed=$seed --size=$size $ML_DATA/SSL2/svhn $ML_DATA/svhn-train.tfrecord $ML_DATA/svhn-extra.tfrecord
+        CUDA_VISIBLE_DEVICES= scripts/create_split.py --seed=$seed --size=$size $ML_DATA/SSL2/svhn_noextra $ML_DATA/svhn-train.tfrecord
     done
-    wait
 done
 ```
 
@@ -62,10 +60,9 @@ export PYTHONPATH=$PYTHONPATH:.
 
 ### Example
 
-For example, training a FixMatch with 32 filters on cifar10 shuffled with `seed=3`, 40 labeled samples and 1
-validation sample:
+For example, train a model with 32 filters on cifar10 shuffled with `seed=1`, 250 labeled samples and 1000 validation sample:
 ```bash
-CUDA_VISIBLE_DEVICES=0 python main.py --filters=32 --dataset=cifar10.3@40-1 --train_dir ./experiments/fixmatch
+CUDA_VISIBLE_DEVICES=0 python main.py --filters=32 --dataset=cifar10.1@250-1000 --train_dir ./experiments/cifar10.1@250-1000
 ```
 
 Available labelled sizes are 250, 1000, 4000.
