@@ -1,7 +1,118 @@
 # Not All Unlabeled Data are Equal:<br/> Learning to Weight Data in Semi-supervised Learning
 
 ## Overview
-This repo is for arXiv paper:
+This code is for paper:
+[Not All Unlabeled Data are Equal: Learning to Weight Data in Semi-supervised Learning](https://arxiv.org/pdf/2007.01293v1.pdf). Zhongzheng Ren*, Raymond A. Yeh*, Alexander G. Schwing. arXiv:2007.01293. (*equal contribtion)
+
+## License
+
+Copyright (C) 2020 The Paper Authors. All Rights Reserved.
+
+The code is released for internal use. Please don't distribute as the paper is still under review.
+ 
+## Setup
+
+**Important**: `ML_DATA` is a shell environment variable that should point to the location where the datasets are installed. See the *Install datasets* section for more details.
+
+### Install dependencies
+
+```bash
+sudo apt install python3-dev python3-virtualenv python3-tk imagemagick
+virtualenv -p python3 --system-site-packages env3
+. env3/bin/activate
+pip install -r requirements.txt
+```
+
+### Install datasets
+
+```bash
+export ML_DATA="path to where you want the datasets saved"
+export PYTHONPATH=$PYTHONPATH:"path to the FixMatch"
+
+# Download datasets
+CUDA_VISIBLE_DEVICES= ./scripts/create_datasets.py
+cp $ML_DATA/svhn-test.tfrecord $ML_DATA/svhn_noextra-test.tfrecord
+
+# Create unlabeled datasets
+CUDA_VISIBLE_DEVICES= scripts/create_unlabeled.py $ML_DATA/SSL2/svhn $ML_DATA/svhn-train.tfrecord $ML_DATA/svhn-extra.tfrecord &
+CUDA_VISIBLE_DEVICES= scripts/create_unlabeled.py $ML_DATA/SSL2/svhn_noextra $ML_DATA/svhn-train.tfrecord &
+CUDA_VISIBLE_DEVICES= scripts/create_unlabeled.py $ML_DATA/SSL2/cifar10 $ML_DATA/cifar10-train.tfrecord &
+wait
+
+# Create semi-supervised subsets
+for seed in 0 1 2 3 4 5; do
+    for size in 250 1000 4000; do
+        CUDA_VISIBLE_DEVICES= scripts/create_split.py --seed=$seed --size=$size $ML_DATA/SSL2/svhn $ML_DATA/svhn-train.tfrecord $ML_DATA/svhn-extra.tfrecord &
+        CUDA_VISIBLE_DEVICES= scripts/create_split.py --seed=$seed --size=$size $ML_DATA/SSL2/svhn_noextra $ML_DATA/svhn-train.tfrecord &
+        CUDA_VISIBLE_DEVICES= scripts/create_split.py --seed=$seed --size=$size $ML_DATA/SSL2/cifar10 $ML_DATA/cifar10-train.tfrecord &
+    done
+    wait
+done
+```
+
+## Running
+
+### Setup
+
+All commands must be ran from the project root. The following environment variables must be defined:
+```bash
+export ML_DATA="path to where you want the datasets saved"
+export PYTHONPATH=$PYTHONPATH:.
+```
+
+### Example
+
+For example, training a FixMatch with 32 filters on cifar10 shuffled with `seed=3`, 40 labeled samples and 1
+validation sample:
+```bash
+CUDA_VISIBLE_DEVICES=0 python fixmatch.py --filters=32 --dataset=cifar10.3@40-1 --train_dir ./experiments/fixmatch
+```
+
+Available labelled sizes are 250, 1000, 4000.
+For validation, available sizes are 1000, 5000.
+Possible shuffling seeds are 1, 2, 3, 4, 5 and 0 for no shuffling (0 is not used in practiced since data requires to be
+shuffled for gradient descent to work properly).
+
+### Image classification (multi-gpu)
+
+Please check the bash scripts under `./runs`.
+
+### Flags
+
+```bash
+python fixmatch.py --help
+# The following option might be too slow to be really practical.
+# python fixmatch.py --helpfull
+# So instead I use this hack to find the flags:
+fgrep -R flags.DEFINE libml fixmatch.py
+```
+
+### Monitoring training progress
+
+You can point tensorboard to the training folder (by default it is `--train_dir=./experiments`) to monitor the training
+process:
+
+```bash
+tensorboard.sh --port 6007 --logdir ./experiments
+```
+
+
+### Checkpoint accuracy
+
+We compute the median accuracy of the last 20 checkpoints in the paper, this is done through this code:
+
+```bash
+# Following the previous example in which we trained cifar10.3@250-5000, extracting accuracy:
+./scripts/extract_accuracy.py ./experiments/fixmatch/cifar10.d.d.d.3@40-1/CTAugment_depth2_th0.80_decay0.990/FixMatch_archresnet_batch64_confidence0.95_filters32_lr0.03_nclass10_repeat4_scales3_uratio7_wd0.0005_wu1.0/
+
+# The command above will create a stats/accuracy.json file in the model folder.
+# The format is JSON so you can either see its content as a text file or process it to your liking.
+```
+
+## Use you own data
+
+## Citing this work
+If you use this code for your research, please cite our paper.
 ```bibtex
 @inproceedings{ren-yeh-ssl2020,
   title = {Not All Unlabeled Data are Equal: Learning to Weight Data in Semi-supervised Learning},
@@ -12,27 +123,13 @@ This repo is for arXiv paper:
 }
 ```
 
-## License
-
-Copyright (C) 2020 The Paper Authors. All Rights Reserved.
-
-The code is released for internal use. Please don't distribute as the paper is still under review.
- 
-## How to use?
-
-### Installation & Dataset
-
-Please check the `README_FixMatch.md` for detailed instructions; all the settings the same for a fair comparison. We have experimented using `cifar10` and `svhn_noextra` with `250, 1000, and 4000` labeled samples in our paper.
-
-### Image classification
-Please check the bash scripts under `./runs`.
-
-### Use you own data
-
 ## Acknowledgement
 
 The code is built based on:
 [FixMatch (commit: 08d9b83)](https://github.com/google-research/fixmatch)
+
+[FixMatch: Simplifying Semi-Supervised Learning with Consistency and Confidence](https://arxiv.org/abs/2001.07685). Kihyuk Sohn, David Berthelot, Chun-Liang Li, Zizhao Zhang, Nicholas Carlini, Ekin D. Cubuk, Alex Kurakin, Han Zhang, and Colin Raffel.
+
 
 ## Contact
 Github issues and PR are preferred. Feel free to contact Jason Ren (zr5 AT illinois.edu) for any questions!
