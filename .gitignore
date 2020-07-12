@@ -1,0 +1,9 @@
+data/
+data_new/
+experiments/
+__pycache__/
+
+*.pyc
+*.so
+*.out
+*.swb
