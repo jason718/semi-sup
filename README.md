@@ -63,10 +63,10 @@ export PYTHONPATH=$PYTHONPATH:.
 For example, train a model with 32 filters on cifar10 shuffled with `seed=1`, 250 labeled samples and 1000 validation sample:
 ```bash
 # single-gpu
-CUDA_VISIBLE_DEVICES=0 python main.py --filters=32 --dataset=cifar10.1@250-1000 --train_dir ./experiments/cifar10.1@250-1000
+CUDA_VISIBLE_DEVICES=0 python main.py --filters=32 --dataset=cifar10.1@250-1000 --train_dir ./experiments
 
 # multi-gpu: just pass more GPUs and the model automatically scales to them, here we assign GPUs 0-1 to the program:
-CUDA_VISIBLE_DEVICES=0,1 python main.py --filters=32 --dataset=cifar10.1@250-1000 --train_dir ./experiments/cifar10.1@250-1000
+CUDA_VISIBLE_DEVICES=0,1 python main.py --filters=32 --dataset=cifar10.1@250-1000 --train_dir ./experiments
 ```
 
 **Naming rule**: `${dataset}.${seed}@${size}-${valid}`<br>
@@ -80,10 +80,9 @@ The hyper-parameters used in the paper:
 ```bash
 for SEED in 1 2 3 4 5; do
     for SIZE in 250 1000 4000; do
-    CUDA_VISIBLE_DEVICES=0,1 python  main.py --filters=32 
+    CUDA_VISIBLE_DEVICES=0,1 python main.py --filters=32 
         --dataset=cifar10.${SEED}@${SIZE}-1000 \
-        --train_dir ./experiments/cifar10.${SEED}@${SIZE}-1000 \
-        --alpha 0.01 --inner_steps 512
+        --train_dir ./experiments --alpha 0.01 --inner_steps 512
     done
 done
 ```
@@ -95,7 +94,7 @@ python main.py --help
 # The following option might be too slow to be really practical.
 # python main.py --helpfull
 # So instead I use this hack to find the flags:
-fgrep -R flags.DEFINE libml fixmatch.py
+fgrep -R flags.DEFINE libml main.py
 ```
 
 ### Monitoring training progress
@@ -112,9 +111,8 @@ tensorboard.sh --port 6007 --logdir ./experiments
 We compute the median accuracy of the last 20 checkpoints in the paper, this is done through this code:
 
 ```bash
-# Following the previous example in which we trained cifar10.3@250-5000, extracting accuracy:
-./scripts/extract_accuracy.py ./experiments/fixmatch/cifar10.d.d.d.3@40-1/CTAugment_depth2_th0.80_decay0.990/FixMatch_archresnet_batch64_confidence0.95_filters32_lr0.03_nclass10_repeat4_scales3_uratio7_wd0.0005_wu1.0/
-
+# Following the previous example in which we trained cifar10.1@250-1000, extracting accuracy:
+./scripts/extract_accuracy.py ./experiments/cifar10.d.d.d.1@250-1000/CTAugment_depth2_th0.80_decay0.990/FixMatch_alpha0.01_archresnet_batch64_confidence0.95_filters32_inf_warm0_inner_steps100_lr0.03_nclass10_repeat4_scales3_size_unlabeled49000_uratio7_wd0.0005_wu1.0
 # The command above will create a stats/accuracy.json file in the model folder.
 # The format is JSON so you can either see its content as a text file or process it to your liking.
 ```
