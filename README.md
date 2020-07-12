@@ -65,7 +65,7 @@ export PYTHONPATH=$PYTHONPATH:.
 For example, training a FixMatch with 32 filters on cifar10 shuffled with `seed=3`, 40 labeled samples and 1
 validation sample:
 ```bash
-CUDA_VISIBLE_DEVICES=0 python fixmatch.py --filters=32 --dataset=cifar10.3@40-1 --train_dir ./experiments/fixmatch
+CUDA_VISIBLE_DEVICES=0 python main.py --filters=32 --dataset=cifar10.3@40-1 --train_dir ./experiments/fixmatch
 ```
 
 Available labelled sizes are 250, 1000, 4000.
@@ -80,9 +80,9 @@ Please check the bash scripts under `./runs`.
 ### Flags
 
 ```bash
-python fixmatch.py --help
+python main.py --help
 # The following option might be too slow to be really practical.
-# python fixmatch.py --helpfull
+# python main.py --helpfull
 # So instead I use this hack to find the flags:
 fgrep -R flags.DEFINE libml fixmatch.py
 ```
@@ -95,7 +95,6 @@ process:
 ```bash
 tensorboard.sh --port 6007 --logdir ./experiments
 ```
-
 
 ### Checkpoint accuracy
 
