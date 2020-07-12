@@ -13,7 +13,7 @@ The code is released for internal use. Please don't distribute as the paper is s
 ## Setup
 
 **Important**: `ML_DATA` is a shell environment variable that should point to the location where the datasets are installed. See the *Install datasets* section for more details. <br>
-**Environement***: this code is tested using python-3.7, anaconda3-5.0.1, cuda-10.1, cudnn-v7.6.5.32, tensorflow-1.14/1.15
+**Environement***: this code is tested using python-3.7, anaconda3-5.0.1, cuda-10.0, cudnn-v7.6, tensorflow-1.14/1.15
 
 ### Install dependencies
 
@@ -22,6 +22,7 @@ conda create -n semi-sup python=3.7
 conda activate semi-sup
 pip install -r requirements.txt
 ```
+make sure `tf.test.is_gpu_available() == True` after installation so that GPUs will be used.
 
 ### Install datasets
 
