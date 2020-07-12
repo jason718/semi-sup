@@ -223,7 +223,7 @@ def _is_installed_folder(name, folder):
 CONFIGS = dict(
     cifar10=dict(loader=_load_cifar10, checksums=dict(train=None, test=None)),
     # cifar100=dict(loader=_load_cifar100, checksums=dict(train=None, test=None)),
-    # svhn=dict(loader=_load_svhn, checksums=dict(train=None, test=None, extra=None)),
+    svhn=dict(loader=_load_svhn, checksums=dict(train=None, test=None, extra=None)),
     # stl10=dict(loader=_load_stl10, checksums=dict(train=None, test=None)),
 )
 
