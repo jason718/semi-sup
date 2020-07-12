@@ -1,21 +1,38 @@
 # Not All Unlabeled Data are Equal:<br/> Learning to Weight Data in Semi-supervised Learning
 
 ## Overview
-This is the code for FixMatch variant in NeurIPS 2020 submission 2536. This folder contains the following:
+This repo is for arXiv paper:
+```bibtex
+@inproceedings{ren-yeh-ssl2020,
+  title = {Not All Unlabeled Data are Equal: Learning to Weight Data in Semi-supervised Learning},
+  author = {Zhongzheng Ren$^\ast$ and Raymond A. Yeh$^\ast$ and Alexander G. Schwing},
+  booktitle = {arXiv:2007.01293},
+  year = {2020},
+  note = {$^\ast$ equal contribution},
+}
+```
 
-*   Code for image classifications on CIFAR-10 and SVHN (Sec.3.2).
+## License
 
-## Reproducibility
-All of the code in this repository used `NVIDIA V100 Tensor Core GPUs`. We used multi-GPU training and two GPUs are used for each experiments.
+Copyright (C) 2020 The Paper Authors. All Rights Reserved.
 
-## Installation & Dataset
+The code is released for internal use. Please don't distribute as the paper is still under review.
+ 
+## How to use?
+
+### Installation & Dataset
 
 Please check the `README_FixMatch.md` for detailed instructions; all the settings the same for a fair comparison. We have experimented using `cifar10` and `svhn_noextra` with `250, 1000, and 4000` labeled samples in our paper.
 
-## Image classification (ours)
+### Image classification
 Please check the bash scripts under `./runs`.
+
+### Use you own data
 
 ## Acknowledgement
 
 The code is built based on:
 [FixMatch (commit: 08d9b83)](https://github.com/google-research/fixmatch)
+
+## Contact
+Github issues and PR are preferred. Feel free to contact Jason Ren (zr5 AT illinois.edu) for any questions!
