@@ -119,6 +119,12 @@ We compute the median accuracy of the last 20 checkpoints in the paper, this is 
 ```
 
 ## Use you own data
+1. You first need to creat `*.tfrecord` for the labeled and unlabled data; please check `scripts/create_datasets.py` and `scripts/create_unlabeled.py` for examples.
+2. Then you need to creat the splits for semi-supervied learning; see `scripts/create_split.py`.
+3. modify `libml/data.py` to support the new dataset. Specifically, check this [function](https://github.com/jason718/semi-sup/blob/71c10c8c1f0e83ffd7e7baf34b191afa902cf860/libml/data.py#L303) and this [class](https://github.com/jason718/semi-sup/blob/71c10c8c1f0e83ffd7e7baf34b191afa902cf860/libml/data.py#L236).
+4. tune hyper-parameters (e.g., learning rate, num_epochs, etc.) to achieve the best results.
+
+**Note:** our algorithm involves approximation of inverse-Hessian and computation of per-example gradients. Therefore, running on a dataset with large number of classes will be computationally heavy in terms of both speed and memory.
 
 ## Citing this work
 If you use this code for your research, please cite our paper.
