@@ -1,0 +1,11 @@
+data/
+dataset/
+data_new/
+experiments/
+.vscode/
+__pycache__/
+
+*.pyc
+*.so
+*.out
+*.swb
