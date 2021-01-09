@@ -2,14 +2,8 @@
 
 ## Overview
 This code is for paper:
-[Not All Unlabeled Data are Equal: Learning to Weight Data in Semi-supervised Learning](https://arxiv.org/pdf/2007.01293v1.pdf). Zhongzheng Ren*, Raymond A. Yeh*, Alexander G. Schwing. arXiv:2007.01293. (*equal contribtion)
+[Not All Unlabeled Data are Equal: Learning to Weight Data in Semi-supervised Learning](https://arxiv.org/pdf/2007.01293v1.pdf). Zhongzheng Ren*, Raymond A. Yeh*, Alexander G. Schwing. NeurIPS'20. (*equal contribtion)
 
-## License
-
-Copyright (C) 2020 The Paper Authors. All Rights Reserved.
-
-The code is released for internal use. Please don't distribute as the paper is still under review.
- 
 ## Setup
 
 **Important**: `ML_DATA` is a shell environment variable that should point to the location where the datasets are installed. See the *Install datasets* section for more details. <br>
@@ -127,13 +121,16 @@ We compute the median accuracy of the last 20 checkpoints in the paper, this is 
 
 **Note:** our algorithm involves approximation of inverse-Hessian and computation of per-example gradients. Therefore, running on a dataset with large number of classes will be computationally heavy in terms of both speed and memory.
 
+## License
+Please check [LICENSE](LICENSE)
+
 ## Citing this work
 If you use this code for your research, please cite our paper.
 ```bibtex
-@inproceedings{ren-yeh-ssl2020,
+@inproceedings{ren-ssl2020,
   title = {Not All Unlabeled Data are Equal: Learning to Weight Data in Semi-supervised Learning},
   author = {Zhongzheng Ren$^\ast$ and Raymond A. Yeh$^\ast$ and Alexander G. Schwing},
-  booktitle = {arXiv:2007.01293},
+  booktitle = {Neural Information Processing Systems (NeurIPS)},
   year = {2020},
   note = {$^\ast$ equal contribution},
 }
