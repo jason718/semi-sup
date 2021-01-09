@@ -2,7 +2,7 @@
 
 ## Overview
 This code is for paper:
-[Not All Unlabeled Data are Equal: Learning to Weight Data in Semi-supervised Learning](https://arxiv.org/pdf/2007.01293v1.pdf). Zhongzheng Ren*, Raymond A. Yeh*, Alexander G. Schwing. NeurIPS'20. (*equal contribtion)
+[Not All Unlabeled Data are Equal: Learning to Weight Data in Semi-supervised Learning](https://arxiv.org/pdf/2007.01293.pdf). Zhongzheng Ren*, Raymond A. Yeh*, Alexander G. Schwing. NeurIPS'20. (*equal contribtion)
 
 ## Setup
 
