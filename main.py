@@ -1,10 +1,8 @@
 # coding=utf-8
-# Copyright 2020 The Paper Authors. All Rights Reserved.
-#
-# You may not modify, distribute, or use this software
-# for any purpose beyond the NeurIPS 2020 review process.
+# Copyright 2020 The Paper Authors.
 #
 # =======================================================================
+# 
 # Copyright 2019 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,6 +16,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 import functools
 import os
 

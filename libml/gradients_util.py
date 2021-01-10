@@ -1,8 +1,5 @@
 # coding=utf-8
-# Copyright 2020 The Paper Authors. All Rights Reserved.
-#
-# You may not modify, distribute, or use this software
-# for any purpose beyond the NeurIPS 2020 review process.
+# Copyright 2020 The Paper Authors.
 #
 # =======================================================================
 # Copyright 2015 The TensorFlow Authors. All Rights Reserved.
